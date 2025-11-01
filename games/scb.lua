@@ -154,22 +154,34 @@ local GameTab = Window:CreateTab("Game", "gamepad-2")
 
 GameTab:CreateSection("Auto Collect")
 
+local GameTab = Window:CreateTab("Game", "gamepad-2")
+
+GameTab:CreateSection("Auto Collect")
+
+local collectDelay = 0.1
+GameTab:CreateSlider({
+	Name = "Collect Delay",
+	Range = {0.1, 5},
+	Increment = 0.1,
+	Suffix = "s",
+	CurrentValue = collectDelay,
+	Callback = function(Value)
+		collectDelay = Value
+	end,
+})
+
 GameTab:CreateToggle({
 	Name = "Auto Collect Cash",
 	CurrentValue = false,
 	Flag = "AutoCollectToggle",
 	Callback = function(Value)
-		  while Value do
-        for i = 1, 10 do
-         	local args = {
-		        i
-         	}
-        
-        	game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RequestClientCashCollection"):FireServer(unpack(args))
-
-          wait(0.1)
-        end
-      end
+		while Value do
+			for i = 1, 10 do
+				local args = { i }
+				game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RequestClientCashCollection"):FireServer(unpack(args))
+				wait(collectDelay)
+			end
+		end
 	end,
 })
 
