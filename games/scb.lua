@@ -166,13 +166,19 @@ GameTab:CreateSlider({
 	end,
 })
 
+local autoCollectEnabled = false
+
 GameTab:CreateToggle({
 	Name = "Auto Collect Cash",
 	CurrentValue = false,
 	Flag = "AutoCollectToggle",
 	Callback = function(Value)
+        autoCollectEnabled = Value
+			
 		while Value do
 			for i = 1, 10 do
+				if not autoCollectEnabled then break end
+					
 				local args = { i }
 				game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("RequestClientCashCollection"):FireServer(unpack(args))
 			end
