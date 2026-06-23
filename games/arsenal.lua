@@ -1,8 +1,12 @@
 local HelixiaHUB = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/library/source"))()
+local MarketplaceService = game:GetService("MarketplaceService")
+
+local placeId = game.PlaceId
+local info = MarketplaceService:GetProductInfo(placeId)
 
 local win = HelixiaHUB:CreateWindow({
-	Title    = "Helixia HUB",
-	SubTitle = "Helixia HUB v2.0 - Pro Edition",
+	Title    = "Helixia HUB - " .. info.Name,
+	SubTitle = "Helixia HUB v2.0",
 	Icon     = "rbxassetid://102278873791566",
 	Size     = Vector2.new(860, 600),
 })
@@ -42,11 +46,11 @@ generalTab:CreateSection("Server Management")
 
 generalTab:CreateButton({
 	Text        = "Welcome!",
-	Description = "Helixia HUB Pro Edition loaded.",
+	Description = "Helixia HUB loaded.",
 	Callback    = function()
 		HelixiaHUB:Notify({
 			Title    = "Helixia HUB",
-			Message  = "Pro script is active and running!",
+			Message  = "Script is active and running!",
 			Type     = "Success",
 			Duration = 3,
 		})
@@ -900,7 +904,7 @@ end
 -- ===== STARTUP =====
 task.delay(0.8, function()
 	HelixiaHUB:Notify({
-		Title    = "Helixia HUB Pro",
+		Title    = "Helixia HUB",
 		Message  = "v2.0 loaded! Check all tabs for features.",
 		Type     = "Success",
 		Duration = 5,
