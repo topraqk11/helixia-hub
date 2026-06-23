@@ -7,4 +7,9 @@
   "placeId": "662417684",
   "name": "Lucky Blocks",
   "url": "https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/games/lucky-block.lua"
+},
+{
+  "placeId": "3101667897",
+  "name": "Legend Of Speed",
+  "url": "https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/games/legend-of-speed.lua"
 }]
