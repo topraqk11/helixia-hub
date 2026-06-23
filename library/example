@@ -1,6 +1,6 @@
-local PremiumUI = require(game.ReplicatedStorage.GUI)
+local HelixiaHUB = loadstring(HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/library/source"))()
 
-local win = PremiumUI:CreateWindow({
+local win = HelixiaHUB:CreateWindow({
 	Title    = "Helixia HUB",
 	SubTitle = "Helixia HUB v2.0",
 	Icon     = "rbxassetid://102278873791566",
@@ -8,7 +8,7 @@ local win = PremiumUI:CreateWindow({
 })
 
 local themeNames = {}
-for name in pairs(PremiumUI.Themes) do
+for name in pairs(HelixiaHUB.Themes) do
 	table.insert(themeNames, name)
 end
 table.sort(themeNames)
@@ -26,7 +26,7 @@ generalTab:CreateButton({
 	Text        = "Welcome!",
 	Description = "Helixia HUB v2.0 has loaded successfully.",
 	Callback    = function()
-		PremiumUI:Notify({
+		HelixiaHUB:Notify({
 			Title    = "Helixia HUB",
 			Message  = "Script is active and running.",
 			Type     = "Success",
@@ -159,8 +159,8 @@ settingsTab:CreateDropdown({
 	Options  = themeNames,
 	Default  = "Midnight",
 	Callback = function(v)
-		PremiumUI.Theme:SetPalette(v)
-		PremiumUI:Notify({
+		HelixiaHUB.Theme:SetPalette(v)
+		HelixiaHUB:Notify({
 			Title    = "Theme Changed",
 			Message  = v .. " theme applied.",
 			Type     = "Success",
@@ -176,7 +176,7 @@ settingsTab:CreateToggle({
 	Description = "Toggles the blur effect behind the window",
 	Default     = true,
 	Callback    = function(v)
-		local blur = game:GetService("Lighting"):FindFirstChild("PremiumUIBlur")
+		local blur = game:GetService("Lighting"):FindFirstChild("HelixiaHUBBlur")
 		if blur then
 			blur.Enabled = v
 		end
@@ -187,11 +187,11 @@ settingsTab:CreateSection("About")
 
 settingsTab:CreateButton({
 	Text        = "Helixia HUB v2.0",
-	Description = "Built with the PremiumUI library.",
+	Description = "Built with the HelixiaHUB library.",
 	Callback    = function()
-		PremiumUI:Notify({
+		HelixiaHUB:Notify({
 			Title    = "Helixia HUB",
-			Message  = "v2.0 — Built with PremiumUI.",
+			Message  = "v2.0 — Built with HelixiaHUB.",
 			Type     = "Info",
 			Duration = 3,
 		})
@@ -199,7 +199,7 @@ settingsTab:CreateButton({
 })
 
 task.delay(0.8, function()
-	PremiumUI:Notify({
+	HelixiaHUB:Notify({
 		Title    = "Helixia HUB",
 		Message  = "Welcome! Script loaded successfully.",
 		Type     = "Success",
