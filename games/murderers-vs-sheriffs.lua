@@ -227,7 +227,7 @@ local aimbotTab = win:CreateTab({
 	Icon = "rbxassetid://104214411068348"
 })
 
-AimbotTab:CreateSection("AimBot")
+aimbotTab:CreateSection("AimBot")
 local aimbotEnabled = false
 
 local teamCheck = true
@@ -309,7 +309,7 @@ RunService.RenderStepped:Connect(function()
 	end
 end)
 
-AimbotTab:CreateToggle({
+aimbotTab:CreateToggle({
 	Text = "Aimbot",
 	Default = false,
 	Callback = function(v)
