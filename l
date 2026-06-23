@@ -1,6 +1,6 @@
 local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk1/helixia-hub/refs/heads/main/Scripts/library.lua"))()
 
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId)?.Name or "Unknown Game"
+local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown Game"
 
 local Window = Rayfield:CreateWindow({
    Name = "Helixia Hub | " .. gameName,
@@ -123,287 +123,156 @@ UIS.JumpRequest:Connect(function()
 end)
 
 local GameTab = Window:CreateTab("Game", "crosshair")
-GameTab:CreateSection("Lucky Block Spawner")
+GameTab:CreateSection("ESP")
 
-GameTab:CreateButton({
-    Name = "Spawn Normal Lucky Block",
-    Callback = function()
-        game:GetService("ReplicatedStorage"):WaitForChild("SpawnLuckyBlock"):FireServer()
-    end,
-})
+local espHighlights = {}
+local runServiceConnection = nil
 
-GameTab:CreateButton({
-    Name = "Spawn Super Lucky Block",
-    Callback = function()
-        game:GetService("ReplicatedStorage"):WaitForChild("SpawnSuperBlock"):FireServer()
-    end,
-})
-
-GameTab:CreateButton({
-    Name = "Spawn Diamond Lucky Block",
-    Callback = function()
-        game:GetService("ReplicatedStorage"):WaitForChild("SpawnDiamondBlock"):FireServer()
-    end,
-})
-
-GameTab:CreateButton({
-    Name = "Spawn Rainbow Lucky Block",
-    Callback = function()
-        game:GetService("ReplicatedStorage"):WaitForChild("SpawnRainbowBlock"):FireServer()
-    end,
-})
-
-GameTab:CreateButton({
-    Name = "Spawn Galaxy Lucky Block",
-    Callback = function()
-        game:GetService("ReplicatedStorage"):WaitForChild("SpawnGalaxyBlock"):FireServer()
-    end,
-})
-
-
-
-
-local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk1/helixia-hub/refs/heads/main/Scripts/library.lua"))()
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
-local plr = game.Players.LocalPlayer
-
-_G.autoOrbFarm = false
-_G.autoGemFarm = false
-_G.autoRebirth = false
-
-local gameName = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name or "Unknown Game"
-
-local Window = Rayfield:CreateWindow({
-    Name = "Helixia Hub | " .. gameName,
-    Icon = "gamepad",
-    LoadingTitle = "Helixia Hub",
-    LoadingSubtitle = "discord.gg/JRzMYAWvUZ",
-    Theme = "Default",
-
-    DisableRayfieldPrompts = false,
-    DisableBuildWarnings = false,
-
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "HelixiaHub",
-        FileName = "Config"
-    },
-
-    Discord = {
-        Enabled = false,
-        Invite = "noinvitelink",
-        RememberJoins = true
-    },
-
-    KeySystem = false,
-    KeySettings = {
-        Title = "Helixia Hub",
-        Subtitle = "Key System",
-        Note = "Anahtar almak için özel bilgi verilmemiş",
-        FileName = "Key",
-        SaveKey = true,
-        GrabKeyFromSite = false,
-        Key = { "Hello" }
-    }
-})
-
-local MainTab = Window:CreateTab("Home", "home")
-MainTab:CreateSection("General")
-
-MainTab:CreateButton({
-    Name = "Rejoin Server",
-    Callback = function()
-        local ts = game:GetService("TeleportService")
-        local placeId = game.PlaceId
-        ts:Teleport(placeId, plr)
-    end,
-})
-
-MainTab:CreateButton({
-    Name = "Hop to New Server",
-    Callback = function()
-        local HttpService = game:GetService("HttpService")
-        local TeleportService = game:GetService("TeleportService")
-        local Servers = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" ..
-            game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=100")).data
-
-        for _, v in pairs(Servers) do
-            if v.playing < v.maxPlayers then
-                TeleportService:TeleportToPlaceInstance(game.PlaceId, v.id, plr)
-                break
-            end
-        end
-    end,
-})
-
-local PlayerTab = Window:CreateTab("Player", "user")
-PlayerTab:CreateSection("Player Settings")
-
-local character = function() return plr.Character or plr.CharacterAdded:Wait() end
-
-PlayerTab:CreateSlider({
-    Name = "Walk Speed",
-    Range = { 16, 250 },
-    Increment = 1,
-    CurrentValue = 16,
-    Flag = "Slider1",
-    Callback = function(Value)
-        character():WaitForChild("Humanoid").WalkSpeed = Value
-    end,
-})
-
-PlayerTab:CreateSlider({
-    Name = "Jump Power",
-    Range = { 50, 300 },
-    Increment = 5,
-    CurrentValue = 50,
-    Flag = "Slider1",
-    Callback = function(Value)
-        character():WaitForChild("Humanoid").JumpPower = Value
-    end,
-})
-
-local infiniteJumpEnabled = false
-
-PlayerTab:CreateToggle({
-    Name = "Infinite Jump",
+GameTab:CreateToggle({
+    Name = "ESP",
     CurrentValue = false,
     Callback = function(Value)
-        infiniteJumpEnabled = Value
-        if infiniteJumpEnabled then
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Enabled",
-                Duration = 3
-            })
+        if Value then
+            runServiceConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+                    if player ~= game.Players.LocalPlayer and player.Team ~= game.Players.LocalPlayer.Team then
+                        local character = player.Character
+                        if character and character:FindFirstChild("HumanoidRootPart") then
+                            local existingHighlight = espHighlights[player]
+
+                            if not existingHighlight or existingHighlight.Adornee ~= character then
+                                if existingHighlight then
+                                    existingHighlight:Destroy()
+                                end
+
+                                local highlight = Instance.new("Highlight")
+                                highlight.Adornee = character
+                                highlight.FillColor = Color3.new(1, 0, 0)
+                                highlight.OutlineColor = Color3.new(0, 0, 0)
+                                highlight.FillTransparency = 0.5
+                                highlight.OutlineTransparency = 0
+                                highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+                                highlight.Parent = game.CoreGui
+                                espHighlights[player] = highlight
+                            end
+                        end
+                    end
+                end
+
+                for player, highlight in pairs(espHighlights) do
+                    if not player.Character or player.Team == game.Players.LocalPlayer.Team then
+                        highlight:Destroy()
+                        espHighlights[player] = nil
+                    end
+                end
+            end)
         else
-            Rayfield:Notify({
-                Title = "Infinite Jump",
-                Content = "Disabled",
-                Duration = 3
-            })
+            if runServiceConnection then
+                runServiceConnection:Disconnect()
+                runServiceConnection = nil
+            end
+            for _, highlight in pairs(espHighlights) do
+                highlight:Destroy()
+            end
+            espHighlights = {}
         end
-    end,
+    end
 })
 
-local UIS = game:GetService("UserInputService")
-UIS.JumpRequest:Connect(function()
-    if infiniteJumpEnabled then
-        character():WaitForChild("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-    end
-end)
+GameTab:CreateSection("AimBot")
+local aimbotEnabled = false
 
-local GameTab = Window:CreateTab("Game", "crosshair")
+local teamCheck = true
+local maxDistance = 500
 
-local codes = {
-  "swiftjungle1000",
-  "speedchampion000",
-  "SPRINT250",
-  "hyper250",
-  "racer300",
-  "Launch200",
-  "sparkles300",
-  "legends500"
-}
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+local Backpack = LocalPlayer:WaitForChild("Backpack")
 
-function useCode(code)
+local ShootRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Shoot")
+
+local function getClosestEnemyPlayer()
+	local closestPlayer = nil
+	local shortestDistance = maxDistance
+
+	for _, player in pairs(Players:GetPlayers()) do
+		if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+			if not teamCheck or player.Team ~= LocalPlayer.Team then
+				local hrp = player.Character.HumanoidRootPart
+				local distance = (Camera.CFrame.Position - hrp.Position).Magnitude
+				if distance < shortestDistance then
+					shortestDistance = distance
+					closestPlayer = player
+				end
+			end
+		end
+	end
+
+	return closestPlayer
+end
+
+local function isOnScreen(part)
+	local _, onScreen = Camera:WorldToViewportPoint(part.Position)
+	return onScreen
+end
+
+local function shootAtPlayer(targetPlayer)
+	if not targetPlayer or not targetPlayer.Character then return end
+
+	local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+
+	local firePos = root.Position + Vector3.new(0, 1.5, 0)
+
+	local targetPart = nil
+	for _, part in ipairs(targetPlayer.Character:GetChildren()) do
+		if part:IsA("BasePart") and isOnScreen(part) then
+			targetPart = part
+			break
+		end
+	end
+
+	if not targetPart then return end
+
 	local args = {
-		code
+		firePos,
+		targetPart.Position,
+		targetPart,
+		targetPart.Position
 	}
 
-	game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("codeRemote"):InvokeServer(unpack(args))
+	ShootRemote:FireServer(unpack(args))
 end
 
-GameTab:CreateButton({
-    Name = "Use All Codes",
-    Callback = function()
-        for _, code in ipairs(codes) do
-            useCode(code)
-            task.wait(0.3)
-        end
-        Rayfield:Notify({
-            Title = "Codes",
-            Content = "All codes used!",
-            Duration = 4
-        })
-    end
-})
+local lastShootTime = 0
+local shootDelay = 0.1
 
-local FarmTab = Window:CreateTab("Auto Farm", "bolt")
+RunService.RenderStepped:Connect(function()
+	if not aimbotEnabled then return end
 
-function collectOrb(orbColor, map)
-    orbColor = orbColor or "Red"
-    map = map or "City"
+	local currentTime = tick()
+	if currentTime - lastShootTime < shootDelay then return end
 
-    local args = {
-        "collectOrb",
-        orbColor .. " Orb",
-        map
-    }
+	local target = getClosestEnemyPlayer()
+	if target then
+		shootAtPlayer(target)
+		lastShootTime = currentTime
+	end
+end)
 
-    game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("orbEvent"):FireServer(unpack(args))
-end
+GameTab:CreateToggle({
+	Name = "AimBot",
+	CurrentValue = false,
+	Callback = function(Value)
+		aimbotEnabled = Value
 
-function collectGem(map)
-    map = map or "City"
-
-    local args = {
-        "collectOrb",
-        "Gem",
-        map
-    }
-
-    game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("orbEvent"):FireServer(unpack(args))
-end
-
-function rebirth()
-    local args = {
-	    "rebirthRequest"
-    }
-
-    game:GetService("ReplicatedStorage"):WaitForChild("rEvents"):WaitForChild("rebirthEvent"):FireServer(unpack(args))
-end
-
-FarmTab:CreateToggle({
-    Name = "Orb Farm",
-    CurrentValue = false,
-    Callback = function(Value)
-        _G.autoOrbFarm = Value
-
-        while _G.autoOrbFarm do
-            for i = 1, 1000 do
-                collectOrb()
-            end
-            task.wait(0.1)
-        end
-    end
-})
-
-FarmTab:CreateToggle({
-    Name = "Gem Farm",
-    CurrentValue = false,
-    Callback = function(Value)
-        _G.autoGemFarm = Value
-
-        while _G.autoGemFarm do
-            for i = 1, 1000 do
-                collectGem()
-            end
-            task.wait(0.1)
-        end
-    end
-})
-
-FarmTab:CreateToggle({
-    Name = "Auto Rebirth",
-    CurrentValue = false,
-    Callback = function(Value)
-        _G.autoRebirth = Value
-
-        while _G.autoRebirth do
-            rebirth()
-            task.wait(0.1)
-        end
-    end
+		Rayfield:Notify({
+			Title = "AimBot",
+			Content = Value and "Enabled, take the gun." or "Disabled",
+			Duration = 3
+		})
+	end
 })
