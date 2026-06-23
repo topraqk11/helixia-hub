@@ -1,4 +1,4 @@
-<img width="1102" height="691" alt="image" src="https://github.com/user-attachments/assets/cab41206-a1d6-4068-a54e-ec736937f718" /># Helixia HUB
+<img width="1030" height="600" alt="image" src="https://github.com/user-attachments/assets/cab41206-a1d6-4068-a54e-ec736937f718" /># Helixia HUB
 
 A modern, themeable UI library for Roblox — built with clean animations, a full component system, and 15 hand-crafted themes.
 
