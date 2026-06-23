@@ -999,12 +999,12 @@ settingsTab:CreateToggle({
 settingsTab:CreateSection("About")
 
 settingsTab:CreateButton({
-	Text        = "Helixia HUB v2.0 - Enhanced",
-	Description = "Built with the HelixiaHUB library + Rayfield features.",
+	Text        = "Helixia HUB v2.0",
+	Description = "Built with the HelixiaHUB library",
 	Callback    = function()
 		HelixiaHUB:Notify({
 			Title    = "Helixia HUB",
-			Message  = "v2.0 Enhanced — Features merged successfully!",
+			Message  = "v2.0 — Features load successfully!",
 			Type     = "Info",
 			Duration = 3,
 		})
