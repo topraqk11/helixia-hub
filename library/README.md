@@ -30,7 +30,7 @@ A modern, themeable UI library for Roblox — built with clean animations, a ful
 ## Quick Start
 
 ```lua
-local HelixiaHUB = loadstring(HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/library/source"))()
+local HelixiaHUB = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/library/source"))()
 
 -- Create a window
 local win = HelixiaHUB:CreateWindow({
