@@ -223,11 +223,12 @@ playerTab:CreateToggle({
 })
 
 local aimbotTab = win:CreateTab({
-	Name = "Aimbot",
-	Icon = "rbxassetid://104214411068348"
+	Name = "AimBot",
+	Icon = "rbxassetid://98097754960306",
 })
 
-aimbotTab:CreateSection("AimBot")
+aimbotTab:CreateSection("Abilities")
+
 local aimbotEnabled = false
 
 local teamCheck = true
