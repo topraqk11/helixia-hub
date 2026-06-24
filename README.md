@@ -1,4 +1,4 @@
-# HELIXIA HUB
+# HELIXIA LIBRARY
 
 A modern, themeable UI library for Roblox — built with clean animations, a full component system, and 15 hand-crafted themes.
 
@@ -30,10 +30,10 @@ A modern, themeable UI library for Roblox — built with clean animations, a ful
 ## Quick Start
 
 ```lua
-local HelixiaHUB = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-HUB/refs/heads/main/library/source"))()
+local HelixiaLIB = loadstring(game:HttpGet("https://raw.githubusercontent.com/topraqk11/Helixia-LIBRARY/refs/heads/main/library/source"))()
 
 -- Create a window
-local win = HelixiaHUB:CreateWindow({
+local win = HelixiaLIB:CreateWindow({
     Title    = "My Hub",
     SubTitle = "v1.0",
     Icon     = "rbxassetid://102278873791566",
@@ -50,7 +50,7 @@ local generalTab = win:CreateTab({
 generalTab:CreateButton({
     Text     = "Click Me",
     Callback = function()
-        HelixiaHUB:Notify({ Title = "Hello!", Type = "Success" })
+        HelixiaLIB:Notify({ Title = "Hello!", Type = "Success" })
     end,
 })
 ```
@@ -60,6 +60,7 @@ generalTab:CreateButton({
 ## Components
 
 ### Section
+
 ```lua
 generalTab:CreateSection("My Section", {
     Description = "Optional description text.",
@@ -67,6 +68,7 @@ generalTab:CreateSection("My Section", {
 ```
 
 ### Button
+
 ```lua
 generalTab:CreateButton({
     Text        = "Button",
@@ -79,6 +81,7 @@ generalTab:CreateButton({
 ```
 
 ### Toggle
+
 ```lua
 local toggle = generalTab:CreateToggle({
     Text        = "Enable Feature",
@@ -95,6 +98,7 @@ toggle.Changed:Connect(function(v) end)
 ```
 
 ### Slider
+
 ```lua
 local slider = generalTab:CreateSlider({
     Text      = "Walk Speed",
@@ -113,6 +117,7 @@ print(slider.Value)
 ```
 
 ### Dropdown
+
 ```lua
 local dropdown = generalTab:CreateDropdown({
     Text     = "Select Option",
@@ -128,6 +133,7 @@ print(dropdown.Value)
 ```
 
 ### Color Picker
+
 ```lua
 local picker = generalTab:CreateColorPicker({
     Text         = "Accent Color",
@@ -142,6 +148,7 @@ print(picker.Value, picker.Alpha)
 ```
 
 ### Input
+
 ```lua
 local input = generalTab:CreateInput({
     Text        = "Username",
@@ -164,7 +171,7 @@ print(input.Value)
 ## Notifications
 
 ```lua
-HelixiaHUB:Notify({
+HelixiaLIB:Notify({
     Title    = "Title",
     Message  = "Optional body text.",
     Type     = "Success",   -- "Info" | "Success" | "Warning" | "Error"
@@ -177,14 +184,16 @@ HelixiaHUB:Notify({
 ## Theming
 
 ### Switch theme
+
 ```lua
-HelixiaHUB.Theme:SetPalette("Aurora")
+HelixiaLIB.Theme:SetPalette("Aurora")
 ```
 
 ### Auto-load all themes into a dropdown
+
 ```lua
 local themeNames = {}
-for name in pairs(HelixiaHUB.Themes) do
+for name in pairs(HelixiaLIB.Themes) do
     table.insert(themeNames, name)
 end
 table.sort(themeNames)
@@ -194,37 +203,37 @@ settingsTab:CreateDropdown({
     Options  = themeNames,
     Default  = "Midnight",
     Callback = function(v)
-        HelixiaHUB.Theme:SetPalette(v)
+        HelixiaLIB.Theme:SetPalette(v)
     end,
 })
 ```
 
 ### Available themes
 
-| Theme      | Background  | Accent          | Style             |
-|------------|-------------|-----------------|-------------------|
-| Midnight   | Near-black navy  | Bright violet  | Default dark      |
-| Void       | Pure black  | Electric blue   | Ultra minimal     |
-| Slate      | Dark blue-grey | Sky blue     | Clean dark        |
-| Obsidian   | Warm black  | Old gold        | Warm dark         |
-| Aurora     | Deep navy   | Teal-green      | Northern lights   |
-| Crimson    | Dark red    | Ember red       | Intense dark      |
-| Amethyst   | Deep purple | Pure violet     | Rich dark         |
-| Rose       | Dark wine   | Neon pink       | Vibrant dark      |
-| Copper     | Dark brown  | Burnt copper    | Earthy dark       |
-| Forest     | Dark green  | Leaf green      | Nature dark       |
-| Ocean      | Deep ocean  | Bioluminescent cyan | Aquatic dark |
-| Arctic     | Near-white  | Glacier blue    | Light            |
-| Sand       | Cream-desert| Dark gold       | Warm light        |
-| Neon       | Pure black  | Electric lime   | Cyberpunk         |
-| Dusk       | Dark purple | Sunset orange   | Twilight dark     |
+| Theme    | Background      | Accent              | Style           |
+| -------- | --------------- | ------------------- | --------------- |
+| Midnight | Near-black navy | Bright violet       | Default dark    |
+| Void     | Pure black      | Electric blue       | Ultra minimal   |
+| Slate    | Dark blue-grey  | Sky blue            | Clean dark      |
+| Obsidian | Warm black      | Old gold            | Warm dark       |
+| Aurora   | Deep navy       | Teal-green          | Northern lights |
+| Crimson  | Dark red        | Ember red           | Intense dark    |
+| Amethyst | Deep purple     | Pure violet         | Rich dark       |
+| Rose     | Dark wine       | Neon pink           | Vibrant dark    |
+| Copper   | Dark brown      | Burnt copper        | Earthy dark     |
+| Forest   | Dark green      | Leaf green          | Nature dark     |
+| Ocean    | Deep ocean      | Bioluminescent cyan | Aquatic dark    |
+| Arctic   | Near-white      | Glacier blue        | Light           |
+| Sand     | Cream-desert    | Dark gold           | Warm light      |
+| Neon     | Pure black      | Electric lime       | Cyberpunk       |
+| Dusk     | Dark purple     | Sunset orange       | Twilight dark   |
 
 ---
 
 ## Config Manager
 
 ```lua
-local config = HelixiaHUB.Config
+local config = HelixiaLIB.Config
 
 -- Bind a component value to a key
 config:Bind("walkSpeed", mySlider)
@@ -258,5 +267,5 @@ win:SetTheme("Obsidian")  -- shorthand for theme switch
 ---
 
 <div align="center">
-  Made with ❤️ — <strong>Helixia HUB</strong>
+  Made with ❤️ — <strong>HELIXIA LIBRARY</strong>
 </div>
